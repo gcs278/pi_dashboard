@@ -125,8 +125,9 @@
 		position: absolute;
 	}
 	#stocks {
+		position: absolute;
+		bottom: 50px;
 		font-size: 20px;
-		margin-top: 350px;
 		margin-left: 50px;
 		color: white;
 	}
@@ -189,12 +190,9 @@
   				<div id="weather" class="text-center"></div>
   			</div>
   		</div>
-  		<div class="row">
-  			<div class="col-md-4 col-md-offset-0">
-  				<div id="stocks"></div>
-  			</div>
   		</div>
 	    <div id="map" style="background-color: black;"></div>
+		<div id="stocks"></div>
   	</div>
     <script>
     
