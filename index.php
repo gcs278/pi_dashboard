@@ -497,10 +497,12 @@
 	  $('#lamp').click(function() {
 	  	if ( lamp ) {
 		  	$.get("lamp.php?on=1");
-	  	}
+	  		lamp = false;
+		}
 	  	else  {
 	  		$.get("lamp.php?on=0");
-	  	}
+			lamp = true;  
+		}
 	  });
 
 	  function updateWeather() {
