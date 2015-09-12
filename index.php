@@ -149,6 +149,12 @@
 		top: 100px;
 		position: absolute;
 	}
+	#lamp {
+		height: 400px;
+	}
+	#lamp:hover {
+		cursor: pointer;
+	}
 	@-webkit-keyframes rotate {
 	  from {
 	    -webkit-transform: rotate(360deg);
@@ -194,7 +200,7 @@
   		</div>
   		<div class="row">
   			<div class="col-md-5">
-  				<h1><a id="lamp">Toggle Lamp</a></h1>
+  				<img id="lamp" src="off.png">
   			</div>
   			<div class="col-md-2 col-md-5">
   				<div id="weather" class="text-center"></div>
@@ -498,9 +504,11 @@
 	  	if ( lamp ) {
 		  	$.get("lamp.php?on=1");
 	  		lamp = false;
+	  		$('#lamp').attr('src','on.png');
 		}
 	  	else  {
 	  		$.get("lamp.php?on=0");
+	  		$('#lamp').attr('src','off.png');
 			lamp = true;  
 		}
 	  });
