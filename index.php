@@ -130,6 +130,7 @@
 		font-size: 20px;
 		margin-left: 50px;
 		color: white;
+		width: 400px;
 	}
 	#stocks hr {
 		margin-top: 5px;
@@ -141,6 +142,12 @@
 		left: 60px !important;
 		top: 75px !important;
 		height: 350px !important;
+	}
+	#moon {
+		height: 150px;
+		left: 155px;
+		top: 100px;
+		position: absolute;
 	}
 	@-webkit-keyframes rotate {
 	  from {
@@ -186,7 +193,10 @@
 	  		</div>
   		</div>
   		<div class="row">
-  			<div class="col-md-2 col-md-offset-5">
+  			<div class="col-md-5">
+  				<h1><a id="lamp">Toggle Lamp</a></h1>
+  			</div>
+  			<div class="col-md-2 col-md-5">
   				<div id="weather" class="text-center"></div>
   			</div>
   		</div>
@@ -483,43 +493,57 @@
 			$('#headline ul').html("Error Requesting RSS Feed");
 	  	}
 	  });
-
-  	  $.ajax({
-	  	url: 'getrss.php?q=weather',
-	  	type: 'GET',
-	  	success: function(data) {
-	  		parsed = data.split(',');
-	  		temp = parsed[0];
-	  		code = parsed[1];
-	      	$('#weather').html(temp);
-	      	if ( (code >= 34 && code <= 35) || (code >=26 && code <=30) ) {
-  				setTextureUsage( 0, 'Lot' );
-				setTextureUsage( 1, 'None' );
-				setTextureUsage( 2, 'None' );
-				setTextureUsage( 3, 'None' );
-				setTextureUsage( 4, 'None' );
-				setTextureUsage( 5, 'None' );
-				generate();
-				$('#world').append('<img src="light.png" id="sun">');
-	      	}
-	      	else if( (code >= 0 && code <= 12) || (code >=37 && code <= 40) ) {
-	      		setTextureUsage( 0, 'None' );
-				setTextureUsage( 1, 'None' );
-				setTextureUsage( 2, 'Lot' );
-				setTextureUsage( 3, 'None' );
-				setTextureUsage( 4, 'None' );
-				setTextureUsage( 5, 'None' );
-				generate();
-	      	}
-	      	else if ( code == 32 ) {
-				$('#world').append('<img src="light.png" id="sun" class="sunny">');
-	      	}
-
-	  	},
-	  	error: function(err, req) {
-			$('#weather').html("Error Requesting RSS Feed");
+	  var lamp = false;
+	  $('#lamp').click(function() {
+	  	if ( lamp ) {
+		  	$.get("lamp.php?on=1");
+	  	}
+	  	else  {
+	  		$.get("lamp.php?on=0");
 	  	}
 	  });
+
+	  function updateWeather() {
+	  	  $.ajax({
+		  	url: 'getrss.php?q=weather',
+		  	type: 'GET',
+		  	success: function(data) {
+		  		parsed = data.split(',');
+		  		temp = parsed[0];
+		  		code = parsed[1];
+		      	$('#weather').html(temp);
+		      	if ( (code >= 34 && code <= 35) || (code >=26 && code <=30) ) {
+	  				setTextureUsage( 0, 'Lot' );
+					setTextureUsage( 1, 'None' );
+					setTextureUsage( 2, 'None' );
+					setTextureUsage( 3, 'None' );
+					setTextureUsage( 4, 'None' );
+					setTextureUsage( 5, 'None' );
+					generate();
+					$('#world').append('<img src="light.png" id="sun">');
+		      	}
+		      	else if( (code >= 0 && code <= 12) || (code >=37 && code <= 40) ) {
+		      		setTextureUsage( 0, 'None' );
+					setTextureUsage( 1, 'None' );
+					setTextureUsage( 2, 'Lot' );
+					setTextureUsage( 3, 'None' );
+					setTextureUsage( 4, 'None' );
+					setTextureUsage( 5, 'None' );
+					generate();
+		      	}
+		      	else if ( code == 32 ) {
+					$('#world').append('<img src="light.png" id="sun" class="sunny">');
+		      	}
+		      	else if ( code == 33 ) {
+		      		$('#world').append('<img src="moon.png" id="moon">');
+		      	}
+
+		  	},
+		  	error: function(err, req) {
+				$('#weather').html("Error Requesting RSS Feed");
+		  	}
+		  });
+	  }
 
 	$.ajax({
 	  	url: 'getrss.php?q=stocks',
@@ -576,12 +600,14 @@
 		 }
 
 		 updateClock();
-		 updateDate();	
+		 updateDate();
+		 updateWeather();
 		$(document).ready(function()
 		{
 		   setInterval('updateClock()', 1000);
 		   setInterval('updateDate()', 1000000);
 		   setInterval('showRSS("cnn")',100000);
+		   setInterval('updateWeather()',10000);
 		});
 
 	</script>
